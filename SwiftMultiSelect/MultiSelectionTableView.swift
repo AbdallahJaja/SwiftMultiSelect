@@ -34,10 +34,10 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
             guard let rows = SwiftMultiSelect.dataSource?.numberOfItemsInSwiftMultiSelect() else {
                 return 0
             }
-        
+            
             return rows
         }
-    
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -45,7 +45,8 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
         //Get Reference to Cell
         let cell : CustomTableCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableCell
         cell.selectionStyle = .none
-
+        cell.backgroundColor = UIColor.clear
+        
         var item:SwiftMultiSelectItem!
         
         if SwiftMultiSelect.dataSourceType == .phone{
@@ -54,7 +55,7 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
             //Try to get item from delegate
             item = SwiftMultiSelect.dataSource?.swiftMultiSelect(itemAtRow: indexPath.row)
         }
-
+        
         //Configure cell properties
         cell.labelTitle.text        = item.title
         cell.labelSubTitle.text     = item.description
@@ -62,7 +63,7 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
         cell.imageAvatar.isHidden   = true
         
         if let contact = item.userInfo as? CNContact{
-
+            
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                 
                 if(contact.imageDataAvailable && contact.imageData!.count > 0){
@@ -82,7 +83,7 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
                 }
                 
             }
-  
+            
         }else{
             if item.image == nil && item.imageURL == nil{
                 cell.initials.text          = item.getInitials()
@@ -155,9 +156,9 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
         
         //Get selected cell
         let cell = tableView.cellForRow(at: indexPath) as! CustomTableCell
-
+        
         var item:SwiftMultiSelectItem!
-
+        
         if SwiftMultiSelect.dataSourceType == .phone{
             item = (searchString == "") ?  SwiftMultiSelect.items![indexPath.row] : SwiftMultiSelect.items!.filter({$0.title.lowercased().contains(searchString.lowercased()) || ($0.description != nil && $0.description!.lowercased().contains(searchString.lowercased())) })[indexPath.row]
         }else{
@@ -167,14 +168,14 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
         
         //Save item data 
         item.color = cell.initials.backgroundColor!
-
+        
         //Check if cell is already selected or not
         if cell.accessoryType == UITableViewCellAccessoryType.checkmark
         {
             
             //Set accessory type
             cell.accessoryType = UITableViewCellAccessoryType.none
-
+            
             //Comunicate deselection to delegate
             SwiftMultiSelect.delegate?.swiftMultiSelect(didUnselectItem: item)
             
@@ -192,12 +193,12 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
             
             //Comunicate selection to delegate
             SwiftMultiSelect.delegate?.swiftMultiSelect(didSelectItem: item)
-
+            
             //Reload collectionview
             self.reloadAndPositionScroll(idp: item.row!, remove:false)
             
         }
-
+        
         //Reset search
         if searchString != ""{
             searchBar.text = ""
@@ -205,11 +206,11 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
             SwiftMultiSelect.delegate?.userDidSearch(searchString: "")
             self.tableView.reloadData()
         }
-
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    
+        
         return CGFloat(Config.tableStyle.tableRowHeight)
         
     }
@@ -218,7 +219,7 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchString = searchText
-
+        
         if (searchText.isEmpty) {
             self.perform(#selector(self.hideKeyboardWithSearchBar(_:)), with: searchBar, afterDelay: 0)
             self.searchString = ""

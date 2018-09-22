@@ -78,6 +78,7 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         let searchBar:UISearchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.backgroundImage = UIImage()
         return searchBar
         
     }()
@@ -137,7 +138,6 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         tableView.dataSource    =  self
         //Register cell class
         tableView.register(CustomTableCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.showsVerticalScrollIndicator = true
         tableView.separatorColor = UIColor.clear
         
         //Register collectionvie delegate

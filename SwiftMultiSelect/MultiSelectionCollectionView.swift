@@ -9,7 +9,7 @@
 import Foundation
 import Contacts
 
-extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionViewDataSource{
+extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
@@ -20,7 +20,7 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
     {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath) as! CustomCollectionCell
- 
+        
         //Try to get item from delegate
         var item = self.selectedItems[indexPath.row]
         
@@ -54,8 +54,8 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
                 }
                 
             }
-           
-        //Item is custom type
+            
+            //Item is custom type
         }else{
             if item.image == nil && item.imageURL == nil{
                 cell.initials.text          = item.getInitials()
@@ -82,23 +82,21 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
         return cell
         
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize
-    {
-        
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {        
         return CGSize(width: CGFloat(Config.selectorStyle.selectionHeight),height: CGFloat(Config.selectorStyle.selectionHeight))
     }
     
     @objc func handleTap(sender:UIButton){
-
+        
         //Find current item
         let item = selectedItems.filter { (itm) -> Bool in
             itm.row == sender.tag
-        }.first
+            }.first
         
         //remove item
         reloadAndPositionScroll(idp: item!.row!, remove: true)
-
+        
         if self.selectedItems.count <= 0 {
             //Comunicate deselection to delegate
             toggleSelectionScrollView(show: false)
@@ -111,7 +109,7 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
     ///
     /// - Parameter index: id to remove
     func removeItemAndReload(index:Int){
-
+        
         //if no selection reload all
         if selectedItems.count == 0{
             self.selectionScrollView.reloadData()
@@ -131,11 +129,11 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
         //Identify the item inside selected array
         let item = selectedItems.filter { (itm) -> Bool in
             itm.row == idp
-        }.first
-
+            }.first
+        
         //Remove
         if remove {
-
+            
             //For remove from collection view and create IndexPath, i need the index posistion in the array
             let id = selectedItems.index { (itm) -> Bool in
                 itm.row == idp
@@ -145,12 +143,12 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
             selectedItems = selectedItems.filter({ (itm) -> Bool in
                 itm.row != idp
             })
-
+            
             //Reload collectionview
             if id != nil{
                 removeItemAndReload(index: id!)
             }
-
+            
             SwiftMultiSelect.delegate?.swiftMultiSelect(didUnselectItem: item!)
             
             //Reload cell state
@@ -164,7 +162,7 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
             
             
             
-        //Add
+            //Add
         }else{
             
             toggleSelectionScrollView(show: true)
@@ -172,13 +170,13 @@ extension MultiSelecetionViewController:UICollectionViewDelegate,UICollectionVie
             //Reload data
             self.selectionScrollView.insertItems(at: [IndexPath(item: selectedItems.count-1, section: 0)])
             let lastItemIndex = IndexPath(item: self.selectedItems.count-1, section: 0)
-        
+            
             //Scroll to selected item
             self.selectionScrollView.scrollToItem(at: lastItemIndex, at: .right, animated: true)
             
             reloadCellState(row: idp, selected: true)
             
-        
+            
         }
         
         
