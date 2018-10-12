@@ -230,6 +230,10 @@ extension MultiSelecetionViewController:UITableViewDelegate,UITableViewDataSourc
         self.tableView.reloadData()
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
+    
     @objc func hideKeyboardWithSearchBar(_ searchBar:UISearchBar){
         searchBar.resignFirstResponder()
     }
