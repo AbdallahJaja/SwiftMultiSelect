@@ -79,6 +79,12 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         let searchBar:UISearchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.backgroundImage = UIImage()
+        
+        if let textfield = searchBar.value(forKey: "searchField") as? UITextField { 
+            textfield.font = Config.searchBarStyle.text_font
+            textfield.textColor = Config.searchBarStyle.text_color
+            textfield.backgroundColor = Config.searchBarStyle.backgroundColor
+        } 
         return searchBar
         
     }()
@@ -242,5 +248,8 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
             rightButtonBar.title        = "\(Config.doneString) (\(SwiftMultiSelect.initialSelected.count))"
         }
         
+        // nav barを透明にする 
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController!.navigationBar.shadowImage = UIImage()
     }
 }

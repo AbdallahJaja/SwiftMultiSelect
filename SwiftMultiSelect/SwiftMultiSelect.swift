@@ -165,6 +165,11 @@ public struct Config {
         
     }
 
+    public struct searchBarStyle{
+        public static var text_font            :   UIFont  = UIFont.systemFont(ofSize: 11.0)
+        public static var text_color           :   UIColor = .black
+        public static var backgroundColor      :   UIColor = .white
+    }
 }
 
 
