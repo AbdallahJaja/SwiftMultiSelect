@@ -6,7 +6,7 @@
 //  Copyright © 2017 Luca Becchetti. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// Class that represent the selection view
 class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegate,UISearchBarDelegate {
@@ -187,6 +187,14 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         selectionScrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive                 = true
         selectionScrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive               = true
         selectionScrollView.heightAnchor.constraint(equalToConstant: CGFloat(Config.selectorStyle.selectionHeight)).isActive = true
+
+        if #available(iOS 11.0, *) {
+            let guide = view.safeAreaLayoutGuide
+            tableView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive                 = true
+            tableView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive               = true
+            tableView.contentInsetAdjustmentBehavior = .automatic
+        }
+
         //Add all constraints to view
         view.addConstraints(stackView_H)
         view.addConstraints(stackView_V)
