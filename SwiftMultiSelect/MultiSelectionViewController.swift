@@ -69,6 +69,9 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         let tableView:UITableView = UITableView()
         tableView.backgroundColor = Config.tableStyle.backgroundColor
+        tableView.showsVerticalScrollIndicator = true
+        tableView.indicatorStyle = Config.tableStyle.indicator_style
+        tableView.tintColor = Config.tableStyle.tint_color
         return tableView
         
     }()
@@ -243,6 +246,7 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         rightButtonBar.action = #selector(MultiSelecetionViewController.selectionDidEnd)
         rightButtonBar.target = self
+        rightButtonBar.tintColor = Config.tableStyle.tint_color
         
         self.view.backgroundColor = Config.mainBackground
         
@@ -254,6 +258,7 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
             self.selectionScrollView.reloadData()
             rightButtonBar.isEnabled    = true
             rightButtonBar.title        = "\(Config.doneString) (\(SwiftMultiSelect.initialSelected.count))"
+            rightButtonBar.tintColor    = Config.tableStyle.tint_color
         }
         
         // nav barを透明にする 

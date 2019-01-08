@@ -135,6 +135,11 @@ public struct Config {
         //Font for initials label
         public static var initials_font         :   UIFont  = UIFont.systemFont(ofSize: 18.0)
 
+        //Color for tint
+        public static var tint_color            :   UIColor = .blue
+        //Indicator style
+        public static var indicator_style       :   UIScrollView.IndicatorStyle = .default
+
     }
     
     /// Define the style of scrollview
