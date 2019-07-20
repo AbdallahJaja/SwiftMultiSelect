@@ -38,9 +38,9 @@ class CustomTableCell: UITableViewCell
         label.isOpaque                  = false
         label.backgroundColor           = UIColor.clear
         label.textAlignment             = NSTextAlignment.left
-        label.lineBreakMode             = .byTruncatingTail
+        label.lineBreakMode             = .byWordWrapping
         label.minimumScaleFactor        = 0.6
-        label.adjustsFontSizeToFitWidth = false
+        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines             = 1
         label.textColor                 = Config.tableStyle.description_color
         label.font                      = Config.tableStyle.description_font
@@ -105,14 +105,11 @@ class CustomTableCell: UITableViewCell
         //Adjust initial label view frame
         initials.frame = imageAvatar.frame
         
-        // label right margin
-        let rightMargin:CGFloat = 10.0
-        
         //Adjust title view frame
         labelTitle.frame = CGRect(
             x       : imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin),
             y       : imageAvatar.frame.origin.y,
-            width   : bounds.size.width - (imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin) + rightMargin),
+            width   : bounds.size.width - imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin),
             height  : imageAvatar.frame.size.height/2
         )
         
@@ -120,7 +117,7 @@ class CustomTableCell: UITableViewCell
         labelSubTitle.frame = CGRect(
             x       : imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin),
             y       : labelTitle.frame.origin.y + labelTitle.frame.size.height,
-            width   : bounds.size.width - (imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin) + rightMargin),
+            width   : bounds.size.width - imageAvatar.frame.origin.x + imageAvatar.frame.size.width + CGFloat(Config.tableStyle.avatarMargin),
             height  : imageAvatar.frame.size.height/2
         )
         

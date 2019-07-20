@@ -6,7 +6,7 @@
 //  Copyright © 2017 Luca Becchetti. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 /// Class that represent the selection view
 class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegate,UISearchBarDelegate {
@@ -69,9 +69,6 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         let tableView:UITableView = UITableView()
         tableView.backgroundColor = Config.tableStyle.backgroundColor
-        tableView.showsVerticalScrollIndicator = true
-        tableView.indicatorStyle = Config.tableStyle.indicator_style
-        tableView.tintColor = Config.tableStyle.tint_color
         return tableView
         
     }()
@@ -81,13 +78,6 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         let searchBar:UISearchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.backgroundImage = UIImage()
-        
-        if let textfield = searchBar.value(forKey: "searchField") as? UITextField { 
-            textfield.font = Config.searchBarStyle.text_font
-            textfield.textColor = Config.searchBarStyle.text_color
-            textfield.backgroundColor = Config.searchBarStyle.backgroundColor
-        } 
         return searchBar
         
     }()
@@ -108,17 +98,8 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
     /// Calculate the nav bar height if present
     var navBarHeight:CGFloat{
         get{
-            var statusBarHeight:CGFloat
-            
-            if UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 {
-                //iPhone X
-                statusBarHeight = 44
-            }else{
-                statusBarHeight = 20
-            }
-            
             if (self.navigationController != nil) {
-                return self.navigationController!.navigationBar.frame.size.height + (UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+                return self.navigationController!.navigationBar.frame.size.height + (UIApplication.shared.isStatusBarHidden ? 0 : 20)
             }else{
                 return 0
             }
@@ -134,7 +115,7 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
     
     /// Function to build a views and set constraint
     func createViewsAndSetConstraints(){
-        
+
         //Add stack view to current view
         view.addSubview(stackView)
         
@@ -147,7 +128,6 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         tableView.dataSource    =  self
         //Register cell class
         tableView.register(CustomTableCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.separatorColor = UIColor.clear
         
         //Register collectionvie delegate
         selectionScrollView.delegate    =   self
@@ -182,22 +162,20 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
             views: viewsDictionary
         )
         
-        searchBar.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0).isActive        = true
+        // Test if has notch
+        if (UIApplication.isDeviceWithSafeArea) {
+            searchBar.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 25).isActive        = true
+        } else {
+            searchBar.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0).isActive         = true
+        }
+        
         searchBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive                 = true
         searchBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive               = true
         searchBar.heightAnchor.constraint(equalToConstant: CGFloat(40)).isActive = true
-        
+
         selectionScrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive                 = true
         selectionScrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive               = true
         selectionScrollView.heightAnchor.constraint(equalToConstant: CGFloat(Config.selectorStyle.selectionHeight)).isActive = true
-
-        if #available(iOS 11.0, *) {
-            let guide = view.safeAreaLayoutGuide
-            tableView.leftAnchor.constraint(equalTo: guide.leftAnchor, constant: 0).isActive                 = true
-            tableView.rightAnchor.constraint(equalTo: guide.rightAnchor, constant: 0).isActive               = true
-            tableView.contentInsetAdjustmentBehavior = .automatic
-        }
-
         //Add all constraints to view
         view.addConstraints(stackView_H)
         view.addConstraints(stackView_V)
@@ -246,7 +224,6 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
         
         rightButtonBar.action = #selector(MultiSelecetionViewController.selectionDidEnd)
         rightButtonBar.target = self
-        rightButtonBar.tintColor = Config.tableStyle.tint_color
         
         self.view.backgroundColor = Config.mainBackground
         
@@ -258,11 +235,7 @@ class MultiSelecetionViewController: UIViewController,UIGestureRecognizerDelegat
             self.selectionScrollView.reloadData()
             rightButtonBar.isEnabled    = true
             rightButtonBar.title        = "\(Config.doneString) (\(SwiftMultiSelect.initialSelected.count))"
-            rightButtonBar.tintColor    = Config.tableStyle.tint_color
         }
         
-        // nav barを透明にする 
-        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController!.navigationBar.shadowImage = UIImage()
     }
 }

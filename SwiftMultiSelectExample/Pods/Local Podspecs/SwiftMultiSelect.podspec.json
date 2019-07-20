@@ -5,7 +5,7 @@
   },
   "summary": "SwiftMultiSelect lets a user select multiple contacts from PhoneBook or from custom list",
   "requires_arc": true,
-  "version": "0.2.4",
+  "version": "0.1.6",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -16,7 +16,7 @@
   "homepage": "https://github.com/lucabecchetti/swiftmultiselect",
   "source": {
     "git": "https://github.com/lucabecchetti/swiftmultiselect.git",
-    "tag": "0.2.4"
+    "tag": "0.1.6"
   },
   "frameworks": "UIKit",
   "source_files": "SwiftMultiSelect/*.swift",
